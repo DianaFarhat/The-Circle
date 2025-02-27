@@ -29,7 +29,8 @@ app.use(cors({
 app.options('*', cors());
 
 
-/* app.use("/api/users", userRouter)
+ app.use("/api/users", userRouter)
+ /*
 app.use("/api/category", categoryRouter)
 app.use("/api/products", productRouter) 
 app.use("/api/orders", orderRoutes)

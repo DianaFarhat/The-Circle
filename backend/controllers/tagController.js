@@ -1,4 +1,18 @@
-const Category = require("../models/categoryModel.js");
+import { asyncHandler } from "../middlewares/asyncHandler";
+
+//Import Tag Model
+const Tag = require("../models/tagModel");
+
+
+const createTag= asyncHandler(async (req, res)=> {
+  try{
+
+  }catch(error){
+    
+  }
+})
+
+
 
 exports.listCategory = (async (req, res, next) => {
   try {

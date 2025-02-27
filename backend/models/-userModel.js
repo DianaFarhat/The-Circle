@@ -52,12 +52,50 @@ const userSchema = new mongoose.Schema(
         default: "user",
         enum: ["admin", "user"],
       },
-      orders: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Order",
-        },
-      ],
+      
+      //Nutrition-Related Info
+       // New minimal user info
+    birthdate: {
+      type: Date,
+      required: [true, "Please enter your birthdate"],
+    },
+    sex: {
+      type: String,
+      enum: ["male", "female"],
+      required: [true, "Please enter your sex"],
+    },
+    height: {
+      type: Number,
+      required: [true, "Please enter your height in cm"],
+    },
+    weight: {
+      type: Number,
+      required: [true, "Please enter your weight in kg"],
+    },
+    bodyFatPercentage: {
+      type: Number,
+      required: [true, "Please enter your body fat percentage"],
+    },
+    activityLevel: {
+      type: String,
+      enum: ["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"],
+      required: [true, "Please enter your activity level"],
+    },
+    fitnessGoal: {
+      type: String,
+      enum: ["Fat Loss", "Muscle Gain", "Maintenance"],
+      required: [true, "Please enter your fitness goal"],
+    },
+    targetWeight: {
+      type: Number,
+      required: false,
+    },
+    dietaryPreferences: {
+      type: [String],
+      enum: ["Vegetarian", "Vegan", "Paleo", "Gluten-Free", "Keto", "Other"],
+      default: [],
+    },
+
     },
     { timestamps: true }
   );
@@ -89,6 +127,18 @@ const userSchema = new mongoose.Schema(
     }
     return false;
   };
+
+  // Virtual field for age based on birthdate
+  userSchema.virtual("age").get(function () {
+    const currentDate = new Date();
+    const birthdate = new Date(this.birthdate);
+    let age = currentDate.getFullYear() - birthdate.getFullYear();
+    const monthDiff = currentDate.getMonth() - birthdate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthdate.getDate())) {
+      age--;
+    }
+    return age;
+  });
   
   module.exports = mongoose.model("User", userSchema);
   
