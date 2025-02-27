@@ -11,7 +11,7 @@ const mealSchema = new mongoose.Schema(
     description: { type: String, required: true },
     recipeUrl: { type: String },
     videoUrl: { type: String },
-    tags: {type: [String], default: []},
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     nbOfTimesSaved: { type: Number, required: true },
 
 
