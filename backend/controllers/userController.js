@@ -44,8 +44,25 @@ return token; // ✅ Return the generated token
 
 
 exports.signup = async (req, res) => {
-  const { firstName, lastName, email, username, password, passwordConfirm, role } = req.body;
-
+    const { 
+        firstName, 
+        lastName, 
+        email, 
+        username, 
+        password, 
+        passwordConfirm, 
+        role, 
+        birthdate, 
+        sex, 
+        height, 
+        weight, 
+        bodyFatPercentage, 
+        activityLevel, 
+        fitnessGoal, 
+        targetWeight, 
+        dietaryPreferences 
+    } = req.body;
+      
     try {
     // Check if email is already in use
     const emailCheck = await User.findOne({ email });
