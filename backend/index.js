@@ -3,9 +3,10 @@ const express= require('express');
 const { connectToDatabase } = require('./database');
 const app= express();
 const DB= require('./database').connectToDatabase;
-/* const userRouter=require("./routes/userRouter") */
+const userRouter=require("./routes/userRouter"); 
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
+
 /* const categoryRouter=require("./routes/categoryRouter")
 const productRouter=require("./routes/productRouter")
 const orderRoutes= require('./routes/orderRouter') */
