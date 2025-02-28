@@ -44,6 +44,7 @@ return token; // ✅ Return the generated token
 
 
 exports.signup = async (req, res) => {
+    console.log("Request Body:", req.body); // Add this line to inspect the body
     const { 
         firstName, 
         lastName, 
@@ -94,7 +95,7 @@ exports.signup = async (req, res) => {
         targetWeight,
         dietaryPreferences
     });
-    
+
     // Explicitly validate the document
     await newUser.validate();
 
