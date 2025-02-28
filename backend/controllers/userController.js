@@ -59,8 +59,8 @@ exports.signup = async (req, res) => {
         bodyFatPercentage, 
         activityLevel, 
         fitnessGoal, 
-        targetWeight, 
-        dietaryPreferences 
+        targetWeight= null, 
+        dietaryPreferences= null 
     } = req.body;
       
     try {
@@ -84,8 +84,17 @@ exports.signup = async (req, res) => {
         password,
         passwordConfirm,
         role,
+        birthdate,
+        sex,
+        height,
+        weight,
+        bodyFatPercentage,
+        activityLevel,
+        fitnessGoal,
+        targetWeight,
+        dietaryPreferences
     });
-
+    
     // Explicitly validate the document
     await newUser.validate();
 
