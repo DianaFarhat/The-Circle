@@ -20,6 +20,17 @@ dotenv.config();
 // Run the database connection
 connectToDatabase();
 
+// Global Middleware to handle extra characters and trailing slashes
+app.use((req, res, next) => {
+    // Check if there are extra characters after the route
+    const regex = /\/.*\//;
+    if (req.url !== '/' && regex.test(req.url)) {
+      return res.status(400).json({ message: 'Invalid request URL. Extra characters or trailing slashes are not allowed.' });
+    }
+    next();
+});
+  
+
 //Add necessary middleware
 app.use(express.json());
 app.use(cookieParser()); 

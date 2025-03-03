@@ -100,7 +100,8 @@ const userSchema = new mongoose.Schema(
   
 
   //Favorite Meals
-  favoriteMeals: [{ type: Schema.Types.ObjectId, ref: "Meal", unique: true }],
+  favoriteMeals: [{ type: Schema.Types.ObjectId, ref: "Meal" }] 
+
 
   //TODO: Meal Plan History
 
