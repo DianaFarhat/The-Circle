@@ -4,7 +4,7 @@ const {signup,login,logout,googleLogin,loginWithGoogle } = require('../controlle
 const {authenticate}= require('../middlewares/authMiddleware')
 
 router.post('/signup', signup); // This maps POST /signup to the signup function
-router.post('/auth/login', login); // This maps POST /login to the login function
+router.post('/login', login); // This maps POST /login to the login function
 router.post('/logout', logout); // This maps POST /logout to the logout function
 router.post("/google-login", googleLogin); // Add this route
 router.post("/loginWithGoogle", loginWithGoogle); // Add this route

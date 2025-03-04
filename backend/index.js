@@ -22,13 +22,13 @@ connectToDatabase();
 
 // Global Middleware to handle extra characters and trailing slashes
 app.use((req, res, next) => {
-    // Check if there are extra characters after the route
-    const regex = /\/.*\//;
-    if (req.url !== '/' && regex.test(req.url)) {
-      return res.status(400).json({ message: 'Invalid request URL. Extra characters or trailing slashes are not allowed.' });
+    // Allow root "/" and valid routes, but prevent trailing slashes (except for "/")
+    if (req.url.length > 1 && req.url.endsWith('/')) {
+        return res.status(400).json({ message: 'Invalid request URL. Trailing slashes are not allowed.' });
     }
     next();
 });
+
   
 
 //Add necessary middleware
