@@ -1,13 +1,14 @@
 const express= require('express')
 const router=express.Router();
 const {signup,login,logout,googleLogin,loginWithGoogle } = require('../controllers/userController');
-const {authenticate}= require('../middlewares/authMiddleware')
+const {authenticate, authorizeAdmin}= require('../middlewares/authMiddleware')
 
-router.post('/signup', signup); // This maps POST /signup to the signup function
-router.post('/login', login); // This maps POST /login to the login function
-router.post('/logout', logout); // This maps POST /logout to the logout function
-router.post("/google-login", googleLogin); // Add this route
-router.post("/loginWithGoogle", loginWithGoogle); // Add this route
+// User Authentication Routes
+router.post('/signup', signup); 
+router.post('/login', login); 
+router.post('/logout', logout); 
+router.post("/google-login", googleLogin); 
+router.post("/loginWithGoogle", loginWithGoogle); 
 
  
 module.exports = router; 
