@@ -290,3 +290,34 @@ res.status(500).json({ message: "Google login failed" });
 };
 
 
+exports.getCurrentUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password"); // Exclude password
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.username,
+            email: user.email,
+            role: user.role, 
+            birthdate: user.birthdate,
+            sex: user.sex,
+            height: user.height,
+            weight: user.weight,
+            bodyFatPercentage: user.bodyFatPercentage,
+            activityLevel: user.activityLevel,
+            fitnessGoal: user.fitnessGoal,
+            targetWeight: user.targetWeight,
+            dietaryPreferences: user.dietaryPreferences, // ✅ Now included
+            createdAt: user.createdAt,
+        });
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
