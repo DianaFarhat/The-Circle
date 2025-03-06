@@ -9,7 +9,7 @@ router.post('/login', login);
 router.post('/logout', logout); 
 router.post("/google-login", googleLogin); 
 router.post("/loginWithGoogle", loginWithGoogle); 
-router.put("/update-password", authenticate, updatePassword);
+router.patch("/update-password", authenticate, updatePassword);
 
 
 //Other Routes
