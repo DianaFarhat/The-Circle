@@ -1,6 +1,6 @@
 const express= require('express')
 const router=express.Router();
-const {signup,login,logout,googleLogin,loginWithGoogle, updatePassword, getCurrentUserProfile, updateCurrentUserProfile } = require('../controllers/userController');
+const {signup,login,logout,googleLogin,loginWithGoogle, updatePassword, getCurrentUserProfile, updateCurrentUserProfile, deleteAccount } = require('../controllers/userController');
 const {authenticate}= require('../middlewares/authMiddleware')
 
 // User Authentication Routes
@@ -15,5 +15,6 @@ router.put("/update-password", authenticate, updatePassword);
 //Other Routes
 router.get('/profile', authenticate, getCurrentUserProfile);
 router.put('/profile', authenticate, updateCurrentUserProfile);
+router.delete("/delete-account", authenticate, deleteAccount);
  
 module.exports = router; 

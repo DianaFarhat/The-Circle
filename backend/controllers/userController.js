@@ -309,12 +309,7 @@ exports.updatePassword = async (req, res) => {
         return res.status(404).json({ message: "User not found." });
       }
   
-      // Check if current password is correct
-      const isMatch = await user.checkPassword(currentPassword, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: "Incorrect current password." });
-      }
-  
+      
       // Set new password (bcrypting happens automatically via pre-save middleware)
       user.password = newPassword;
       user.passwordChangedAt = Date.now(); // Ensures old tokens become invalid
@@ -338,24 +333,28 @@ exports.getCurrentUserProfile = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.json({
-            _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            username: user.username,
-            email: user.email,
-            role: user.role, 
-            birthdate: user.birthdate,
-            sex: user.sex,
-            height: user.height,
-            weight: user.weight,
-            bodyFatPercentage: user.bodyFatPercentage,
-            activityLevel: user.activityLevel,
-            fitnessGoal: user.fitnessGoal,
-            targetWeight: user.targetWeight,
-            dietaryPreferences: user.dietaryPreferences, // ✅ Now included
-            createdAt: user.createdAt,
+        res.status(200).json({
+            message: "User profile retrieved successfully.",
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                birthdate: user.birthdate,
+                sex: user.sex,
+                height: user.height,
+                weight: user.weight,
+                bodyFatPercentage: user.bodyFatPercentage,
+                activityLevel: user.activityLevel,
+                fitnessGoal: user.fitnessGoal,
+                targetWeight: user.targetWeight,
+                dietaryPreferences: user.dietaryPreferences,
+                createdAt: user.createdAt,
+            },
         });
+        
     } catch (error) {
         console.error("Error fetching user profile:", error);
         res.status(500).json({ message: "Server error" });
@@ -389,26 +388,60 @@ exports.updateCurrentUserProfile = async (req, res) => {
         const updatedUser = await user.save();
 
         // ✅ Return updated user profile (without password)
-        res.json({
-            _id: updatedUser._id,
-            firstName: updatedUser.firstName,
-            lastName: updatedUser.lastName,
-            username: updatedUser.username,
-            email: updatedUser.email,
-            role: updatedUser.role,
-            birthdate: updatedUser.birthdate,
-            sex: updatedUser.sex,
-            height: updatedUser.height,
-            weight: updatedUser.weight,
-            bodyFatPercentage: updatedUser.bodyFatPercentage,
-            activityLevel: updatedUser.activityLevel,
-            fitnessGoal: updatedUser.fitnessGoal,
-            targetWeight: updatedUser.targetWeight,
-            dietaryPreferences: updatedUser.dietaryPreferences,
-            createdAt: updatedUser.createdAt,
+        res.status(200).json({
+            message: "Profile updated successfully.",
+            user: {
+                _id: updatedUser._id,
+                firstName: updatedUser.firstName,
+                lastName: updatedUser.lastName,
+                username: updatedUser.username,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                birthdate: updatedUser.birthdate,
+                sex: updatedUser.sex,
+                height: updatedUser.height,
+                weight: updatedUser.weight,
+                bodyFatPercentage: updatedUser.bodyFatPercentage,
+                activityLevel: updatedUser.activityLevel,
+                fitnessGoal: updatedUser.fitnessGoal,
+                targetWeight: updatedUser.targetWeight,
+                dietaryPreferences: updatedUser.dietaryPreferences,
+                createdAt: updatedUser.createdAt,
+            },
         });
     } catch (error) {
         console.error("Error updating profile:", error);
         res.status(500).json({ message: "Server error while updating profile" });
     }
 };
+
+exports.deleteAccount = async (req, res) => {
+    try {
+
+        
+      const { currentPassword } = req.body;
+      if (!currentPassword) {
+        return res.status(400).json({ message: "Current password is required." });
+      }
+  
+      // Fetch the user from the database (ensure password is selected)
+      const user = await User.findById(req.user.id).select("+password");
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+  
+      // Use checkPassword method instead of bcrypt.compare()
+      const isMatch = await user.checkPassword(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Incorrect password. Account deletion failed." });
+      }
+  
+      // Delete the user
+      await User.findByIdAndDelete(req.user.id);
+  
+      res.status(200).json({ message: "Account deleted successfully." });
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong.", error });
+    }
+  };
+  
