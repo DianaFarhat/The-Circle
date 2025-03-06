@@ -290,6 +290,45 @@ res.status(500).json({ message: "Google login failed" });
 };
 
 
+exports.updatePassword = async (req, res) => {
+    try {
+      const { currentPassword, newPassword, passwordConfirm } = req.body;
+  
+      // Validate input
+      if (!currentPassword || !newPassword || !passwordConfirm) {
+        return res.status(400).json({ message: "All fields are required." });
+      }
+  
+      if (newPassword !== passwordConfirm) {
+        return res.status(400).json({ message: "New passwords do not match." });
+      }
+  
+      // Get user from DB
+      const user = await User.findById(req.user.id).select("+password");
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+  
+      // Check if current password is correct
+      const isMatch = await user.checkPassword(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Incorrect current password." });
+      }
+  
+      // Set new password (bcrypting happens automatically via pre-save middleware)
+      user.password = newPassword;
+      user.passwordChangedAt = Date.now(); // Ensures old tokens become invalid
+  
+      await user.save(); // ✅ Pre-save middleware will hash the new password automatically
+  
+      res.status(200).json({ message: "Password updated successfully!" });
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong.", error });
+    }
+  };
+  
+
+
 //Profile Details
 exports.getCurrentUserProfile = async (req, res) => {
     try {

@@ -1,6 +1,6 @@
 const express= require('express')
 const router=express.Router();
-const {signup,login,logout,googleLogin,loginWithGoogle, getCurrentUserProfile, updateCurrentUserProfile } = require('../controllers/userController');
+const {signup,login,logout,googleLogin,loginWithGoogle, updatePassword, getCurrentUserProfile, updateCurrentUserProfile } = require('../controllers/userController');
 const {authenticate}= require('../middlewares/authMiddleware')
 
 // User Authentication Routes
@@ -9,6 +9,8 @@ router.post('/login', login);
 router.post('/logout', logout); 
 router.post("/google-login", googleLogin); 
 router.post("/loginWithGoogle", loginWithGoogle); 
+router.put("/update-password", authenticate, updatePassword);
+
 
 //Other Routes
 router.get('/profile', authenticate, getCurrentUserProfile);
