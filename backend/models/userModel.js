@@ -37,9 +37,12 @@ const userSchema = new mongoose.Schema(
     required: [true, "Please enter your password"],
     select: false, 
   },
+  
   passwordConfirm: {
     type: String,
-    required: true,
+    required: function () {
+      return this.isNew; // Required only when creating a new user
+    },
     validate: {
       validator: function (value) {
         return value === this.password;
@@ -47,6 +50,7 @@ const userSchema = new mongoose.Schema(
       message: "Passwords do not match!",
     },
   },
+  
   passwordChangedAt: Date,
   role: {
     type: String,

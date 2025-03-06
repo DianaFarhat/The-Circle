@@ -290,6 +290,7 @@ res.status(500).json({ message: "Google login failed" });
 };
 
 
+//Profile Details
 exports.getCurrentUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select("-password"); // Exclude password
@@ -319,5 +320,56 @@ exports.getCurrentUserProfile = async (req, res) => {
     } catch (error) {
         console.error("Error fetching user profile:", error);
         res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.updateCurrentUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // ✅ Update only the provided fields (keep existing values if not provided)
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.username = req.body.username || user.username;
+        user.email = req.body.email || user.email;
+        user.birthdate = req.body.birthdate || user.birthdate;
+        user.sex = req.body.sex || user.sex;
+        user.height = req.body.height || user.height;
+        user.weight = req.body.weight || user.weight;
+        user.bodyFatPercentage = req.body.bodyFatPercentage || user.bodyFatPercentage;
+        user.activityLevel = req.body.activityLevel || user.activityLevel;
+        user.fitnessGoal = req.body.fitnessGoal || user.fitnessGoal;
+        user.targetWeight = req.body.targetWeight || user.targetWeight;
+        user.dietaryPreferences = req.body.dietaryPreferences || user.dietaryPreferences;
+
+        // ✅ Save updated user data to the database
+        const updatedUser = await user.save();
+
+        // ✅ Return updated user profile (without password)
+        res.json({
+            _id: updatedUser._id,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            role: updatedUser.role,
+            birthdate: updatedUser.birthdate,
+            sex: updatedUser.sex,
+            height: updatedUser.height,
+            weight: updatedUser.weight,
+            bodyFatPercentage: updatedUser.bodyFatPercentage,
+            activityLevel: updatedUser.activityLevel,
+            fitnessGoal: updatedUser.fitnessGoal,
+            targetWeight: updatedUser.targetWeight,
+            dietaryPreferences: updatedUser.dietaryPreferences,
+            createdAt: updatedUser.createdAt,
+        });
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ message: "Server error while updating profile" });
     }
 };
