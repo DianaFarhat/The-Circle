@@ -1,7 +1,7 @@
 const mongoose= require("mongoose");
 const Schema= mongoose.Schema;
 const bcrypt = require('bcrypt');
-
+const crypto= require('crypto');
 
 
 const userSchema = new mongoose.Schema(
@@ -51,7 +51,6 @@ const userSchema = new mongoose.Schema(
     },
   },
   
-  passwordChangedAt: Date,
   role: {
     type: String,
     default: "user",
@@ -104,11 +103,14 @@ const userSchema = new mongoose.Schema(
   
 
   //Favorite Meals
-  favoriteMeals: [{ type: Schema.Types.ObjectId, ref: "Meal" }] 
+  favoriteMeals: [{ type: Schema.Types.ObjectId, ref: "Meal" }], 
 
 
   //TODO: Meal Plan History
 
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 
 },
 { timestamps: true }
@@ -159,6 +161,16 @@ userSchema.methods.passwordChangedAfterTokenIssued = function (JWTTimestamp) {
   }
   return false;
 };
+
+userSchema.methods.generatePasswordToken= function () {
+  const resetToken= crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken= crypto.createHash("sha256").update(resetToken).digest("hex");
+  this.passwordResetExpires= Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+
+}
 
 // Virtual field for age based on birthdate
 userSchema.virtual("age").get(function () {

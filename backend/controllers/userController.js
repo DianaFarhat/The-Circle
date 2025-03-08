@@ -1,5 +1,6 @@
 const User= require("../models/userModel");
 const validator = require('validator');
+const crypto= require('crypto')
 const jwt =require('jsonwebtoken')
 const {promisify}=require('util')
 const env= require('dotenv');
@@ -450,5 +451,42 @@ exports.deleteAccount = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Something went wrong.", error });
     }
-  };
+};
   
+
+//TODO: Elie's 
+exports.forgotPassword= async (req, res) =>{
+    try{
+        //1. Check if user email/username is found
+        const user = await User.findOne({ email });
+
+        if(!user){
+            return res.status(404).json({message: "user not found"});
+        }
+
+        const resetToken= user.generatePasswordResetToken();
+        await user.save({validateBeforeSave: false});
+
+        const url = `${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`;
+
+        const message= "Forgot your password? Reset with: ${url} ";
+
+        try{
+            //TODO: Fix this
+            await sendEmail({
+                email: user.email,
+                subject: "Reset your password, valid for 10 mins",
+                message: message
+            })
+        }catch(err){
+            user.passwordResetToken= undefined;
+            user.passwordResetExpires= undefined;
+            await user.save();
+        }
+
+        return res.status(200).json({message: "Password reset link was sent to your email"});
+
+    }catch (error) {
+      res.status(500).json({ message: "Something went wrong.", error });
+    }
+}
