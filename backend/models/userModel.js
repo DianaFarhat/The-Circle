@@ -130,31 +130,49 @@ try {
   next(err);
 }
 });
-  userSchema.methods.checkPassword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
-  };
-  
-  userSchema.methods.passwordChangedAfterTokenIssued = function (JWTTimestamp) {
-    if (this.passwordChangedAt) {
-      const passwordChangeTime = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
-      return passwordChangeTime > JWTTimestamp;
-    }
-    return false;
-  };
 
-  // Virtual field for age based on birthdate
-  userSchema.virtual("age").get(function () {
-    const currentDate = new Date();
-    const birthdate = new Date(this.birthdate);
-    let age = currentDate.getFullYear() - birthdate.getFullYear();
-    const monthDiff = currentDate.getMonth() - birthdate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthdate.getDate())) {
-      age--;
-    }
-    return age;
-  });
+
+// ✅ Set PasswordChangedAt Only After It's Modified
+userSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password") || this.isNew) return next();
   
-  module.exports = mongoose.model("User", userSchema);
+    // Add a Password Changed Field
+    this.passwordChangedAt= Date.now() - 1000;
+  
+    next();
+  } catch (err) {
+    next(err);
+  }
+
+});
+  
+  
+userSchema.methods.checkPassword = async function (candidatePassword, userPassword) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.passwordChangedAfterTokenIssued = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const passwordChangeTime = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    return passwordChangeTime > JWTTimestamp;
+  }
+  return false;
+};
+
+// Virtual field for age based on birthdate
+userSchema.virtual("age").get(function () {
+  const currentDate = new Date();
+  const birthdate = new Date(this.birthdate);
+  let age = currentDate.getFullYear() - birthdate.getFullYear();
+  const monthDiff = currentDate.getMonth() - birthdate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthdate.getDate())) {
+    age--;
+  }
+  return age;
+});
+
+module.exports = mongoose.model("User", userSchema);
 
 
 
