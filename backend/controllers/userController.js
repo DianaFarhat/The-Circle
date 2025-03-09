@@ -158,66 +158,6 @@ exports.logout = async (req, res) => {
 };
 
 
-exports.protect=async(req,res,next)=>{
-    try{
-        //check if token exists
-        let token;
-        if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
-        ) {
-        token = req.headers.authorization.split(" ")[1];
-        } else if (req.cookies.jwt) {
-        token = req.cookies.jwt; // ✅ Read from cookies
-        }
-        
-
-        if (!token){
-            return res.status(401).json({message:"Not logged in"})
-        }
-    
-
-        //token verification
-
-        let decoded;
-        try{
-
-            decoded= await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-
-        }
-        catch(err)
-        
-        {
-            if (err.name==="JsonWebTokenError"){
-                return res.status(401).json("Invalid Token")
-            }
-            else if(err.name==="TokenExpiredError"){
-                return res.status(401).json("Your session token is expired, Login again!")
-
-        }
-
-    
-        }
-    
-    //check if user exists
-    const currentUser= await User.findById(decoded.id);
-    if (!currentUser){
-        return res.status(401).json({message:"The token owner no longer exists"})
-    }
-
-    //check if user changed the password after taking the token
-    if (currentUser.passwordChangedAfterTokenIssued(decoded.iat)){
-        return res.status(401).json({message:"Your password has been changed, login again!"})
-    }
-
-    // We add the user to all the requests
-    req.user = currentUser;
-    next() ;
-
-}catch(err){
-
-    console.log(err)
-}}
 
 
 exports.googleLogin = async (req, res) => {
@@ -450,5 +390,7 @@ exports.deleteAccount = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Something went wrong.", error });
     }
-  };
+};
+
+
   

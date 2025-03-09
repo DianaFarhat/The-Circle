@@ -134,6 +134,7 @@ try {
     return await bcrypt.compare(candidatePassword, userPassword);
   };
   
+
   userSchema.methods.passwordChangedAfterTokenIssued = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
       const passwordChangeTime = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
@@ -141,6 +142,22 @@ try {
     }
     return false;
   };
+
+  // ✅ Set PasswordChangedAt Only After It's Modified
+  userSchema.pre("save", async function (next) {
+    try {
+      if (!this.isModified("password") || this.isNew) return next();
+    
+      // Add a Password Changed Field
+      this.passwordChangedAt= Date.now() - 1000;
+    
+      next();
+    } catch (err) {
+      next(err);
+    }
+
+  });
+  
 
   // Virtual field for age based on birthdate
   userSchema.virtual("age").get(function () {
