@@ -99,6 +99,9 @@ exports.signup = async (req, res) => {
     // Explicitly validate the document
     await newUser.validate();
 
+    // ✅ Log passwordChangedAt for debugging
+    console.log("passwordChangedAt on signup:", newUser.passwordChangedAt);
+
     // Save the user to the database
     await newUser.save();
 
