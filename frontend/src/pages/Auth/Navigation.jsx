@@ -1,11 +1,14 @@
 import { useState ,useEffect} from "react";
 import {
   AiOutlineHome,
+  AiOutlineMenu,
   AiOutlineShopping,
   AiOutlineLogin,
   AiOutlineUserAdd,
   AiOutlineShoppingCart,
   AiOutlineFileText,
+  AiOutlineSearch,
+  
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/userApiSlice";
@@ -21,8 +24,10 @@ const Navigation = () => {
   const loggedInUserId = storedUser?.data?.user._id;
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
-    const [isLoggedIn, setIsLoggedIn] = useState(!!loggedInUserId); // Local state for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(!!loggedInUserId); // Local state for login status
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen]= useState(false);
+  const [searchQuery, setSearchQuery]= useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -68,13 +73,15 @@ setIsLoggedIn(false);
   return (
     <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 fixed w-full z-50">
       <div className="flex space-x-6">
+        {/*Hamburger toggle */}
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-black focus:outline-none">
+          <AiOutlineMenu size={19} />
+        </button>
         <Link to="/" className="flex items-center hover:text-gray-400">
-        <img src="/c2-removebg-preview.png" alt="Logo" className="h-8 w-auto" />
+        <img src="/c2-removebg-preview.png" alt="Logo" className="pt-1 h-9 w-45" />
         </Link>
-        <Link to="/shop" className="flex items-center hover:text-gray-400">
-          <AiOutlineShopping size={26} />
-          <span className="ml-2">SHOP</span>
-        </Link>
+
+
 
         {loggedInUserId && (
           <Link to="/cart" className="relative flex items-center hover:text-gray-400">
