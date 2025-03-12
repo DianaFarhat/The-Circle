@@ -66,11 +66,10 @@ setIsLoggedIn(false);
   };
 
   return (
-    <div className="top-nav-bar bg-black text-white flex justify-between items-center px-4 py-2 fixed w-full z-50">
+    <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 fixed w-full z-50">
       <div className="flex space-x-6">
         <Link to="/" className="flex items-center hover:text-gray-400">
-          <AiOutlineHome size={26} />
-          <span className="ml-2">HOME</span>
+        <img src="/c2-removebg-preview.png" alt="Logo" className="h-8 w-auto" />
         </Link>
         <Link to="/shop" className="flex items-center hover:text-gray-400">
           <AiOutlineShopping size={26} />
