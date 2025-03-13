@@ -174,20 +174,20 @@ setIsLoggedIn(false);
           {!loggedInUserId ? (
             // Not Logged In: Show Login & Sign Up
             <>
-              <Link to="/login" className="flex items-center px-4 py-2 ">
+              <Link to="/login" className="flex items-center px-4 py-2 " onClick={() => setDropdownOpen(false)}>
                 <span className="text-black">Login</span>
               </Link>
-              <Link to="/register" className="flex items-center px-4 py-2">
+              <Link to="/register" className="flex items-center px-4 py-2" onClick={() => setDropdownOpen(false)}>
                 <span className="text-black">Sign Up</span>
               </Link>
             </>
           ) : (
             // Logged In: Show Profile, Settings & Logout
             <>
-              <Link to="/profile" className="flex items-center px-4 py-2 ">
+              <Link to="/profile" className="flex items-center px-4 py-2" onClick={() => setDropdownOpen(false)}>
                 <span className="text-black">My Profile</span>
               </Link>
-              <Link to="/password-settings" className="flex items-center px-4 py-2">
+              <Link to="/password-settings" className="flex items-center px-4 py-2" onClick={() => setDropdownOpen(false)}>
                 <span className="text-black">Password Settings</span>
               </Link>
               <button
