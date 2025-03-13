@@ -75,7 +75,7 @@ setIsLoggedIn(false);
   };
 
   return (
-    <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 h-16 fixed w-full z-50">
+    <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 h-16 w-full z-50">
     {/* Left Side (Logo & Menu) */}
     <div className="flex items-center space-x-6">
       <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-black focus:outline-none">
@@ -98,7 +98,7 @@ setIsLoggedIn(false);
       <input
         className="w-full bg-white placeholder-gray-700 text-black text-lg border border-gray-300 rounded-full pl-4 pr-14 py-2 transition duration-200 ease-in-out 
         focus:outline-none focus:border-blue-500 hover:border-gray-400 shadow-sm"
-        placeholder="Matcha Protein Powder"
+        placeholder="Matcha Protein Shake"
         style={{
           height: "42px", // Ensures input and button are the same height
           borderColor: colorPalette.citrusZest, // Default border color
