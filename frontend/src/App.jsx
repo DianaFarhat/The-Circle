@@ -16,7 +16,7 @@ function App() {
   <Provider store={store}>  
   <ToastContainer />
    <Navigation/>
-   <main className='py-3 mt-16'>
+   <main className=''>
     <Outlet/>
    </main>
    </Provider>

@@ -135,65 +135,79 @@ const signInWithGoogle = async (e) => {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen">
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-96">
-                <h2 className="text-2xl font-bold mb-4">Login</h2>
-                {error && <p className="text-red-500">{error}</p>}
-                <div className="mb-4">
-                    <label className="block text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        className="w-full px-3 py-2 border rounded"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Password</label>
-                    <input
-                        type="password"
-                        className="w-full px-3 py-2 border rounded"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
+      <div className="flex flex-col lg:flex-row h-screen">
 
-              <button
-  className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm font-medium shadow-sm"
-  onClick={signInWithGoogle}
-  type="button"
->
-<img 
-  src="https://developers.google.com/identity/images/g-logo.png" 
-  alt="Google logo" 
-  className="w-5 h-5"
-/>
+        {/* Left Side - Image with Overlay Text */}
+        <div 
+          className="hidden lg:flex w-1/2 bg-cover bg-center relative" 
+          style={{ backgroundImage: "url('https://images.pexels.com/photos/4853295/pexels-photo-4853295.jpeg?auto=compress&cs=tinysrgb&w=600')" }}
+        >
+          {/* Dark Gradient Overlay for Better Readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
-  Sign in with Google
-</button>
-
-
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-                    disabled={loading}
-                >
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-
-                <div className="mt-6 text-center">
-                    <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <Link to="/register" className="text-indigo-600 hover:underline">
-                            Sign Up
-                        </Link>
-                    </p>
-                </div>
-            </form>
-            <ToastContainer />
+          {/* Text Positioned at the Bottom & Prevents Line Breaks */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center px-6 w-full">
+            <h1 className="text-white text-4xl font-bold drop-shadow-lg whitespace-nowrap">
+              Welcome to The Circle
+            </h1>
+            <p className="text-white text-lg mt-2 max-w-2xl drop-shadow-lg">
+              The circle of people committed to reaching their peak physique.
+            </p>
+          </div>
         </div>
+
+        {/* Right Side - Login Form */}
+        <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8">
+        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-96">
+          <h2 className="text-2xl font-bold mb-4">
+            Login
+          </h2>
+          {error &&
+          <p className="text-red-500">
+            {error}
+          </p>
+          }
+          <div className="mb-4">
+            <label className="block text-gray-700">
+              Email
+            </label>
+            <input type="email" className="w-full px-3 py-2 border rounded" value={email}
+            onChange={(e)=>
+            setEmail(e.target.value)} required />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">
+              Password
+            </label>
+            <input type="password" className="w-full px-3 py-2 border rounded" value={password}
+            onChange={(e)=>
+            setPassword(e.target.value)} required />
+          </div>
+          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm font-medium shadow-sm"
+          onClick={signInWithGoogle} type="button">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo"
+            className="w-5 h-5" />
+            Sign in with Google
+          </button>
+          <button type="submit" className="bg-[#A6D608] text-white px-4 py-2 rounded w-full hover:bg-[#4CAF50] transition" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+          </button>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-indigo-600 hover:underline">
+              Sign Up
+              </Link>
+            </p>
+          </div>
+        </form>
+        <ToastContainer />
+      </div>
+       
+
+
+      </div>
     );
 };
 
