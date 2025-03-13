@@ -9,6 +9,8 @@ import { signInWithPopup } from "firebase/auth";
 const SignUp = () => {
   const navigate = useNavigate(); // ✅ Initialize useNavigate
   const [loading, setLoading] = useState(false); // Track login status
+
+  // Required fields
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,8 +18,20 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [role, setRole] = useState('user');
-  const [message, setMessage] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [sex, setSex] = useState(''); // Enum: "male", "female"
+  const [height, setHeight] = useState(''); // In cm
+  const [weight, setWeight] = useState(''); // In kg
+  const [bodyFatPercentage, setBodyFatPercentage] = useState('');
+  const [activityLevel, setActivityLevel] = useState(''); // Enum: Activity levels
+  const [fitnessGoal, setFitnessGoal] = useState(''); // Enum: Fitness goals
 
+  // Optional fields
+  const [targetWeight, setTargetWeight] = useState('');
+  const [dietaryPreferences, setDietaryPreferences] = useState([]); // Array of dietary preferences
+
+  const [message, setMessage] = useState('');
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
       setLoading(true); // Set button to "Logging in..."
