@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Navigation.css"; // Make sure to update the CSS for top nav bar
 
+
 const Navigation = () => {
   const navigate = useNavigate();
   const storedUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -71,90 +72,95 @@ setIsLoggedIn(false);
   };
 
   return (
-    <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 fixed w-full z-50">
-      <div className="flex space-x-6">
-        {/*Hamburger toggle */}
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-black focus:outline-none">
-          <AiOutlineMenu size={19} />
-        </button>
-        <Link to="/" className="flex items-center hover:text-gray-400">
-        <img src="/c2-removebg-preview.png" alt="Logo" className="pt-1 h-9 w-45" />
-        </Link>
-
-
-
-        {loggedInUserId && (
-          <Link to="/cart" className="relative flex items-center hover:text-gray-400">
-            <AiOutlineShoppingCart size={26} />
-            {cartItems.length > 0 && (
-              <span className="absolute top-0 right-0 px-1 py-0 text-sm text-white bg-pink-500 rounded-full">
-                {cartItems.reduce((a, c) => a + c.qty, 0)}
-              </span>
-            )}
-            <span className="ml-2">Cart</span>
-          </Link>
-        )}
-
-        {loggedInUserId && (
-          <Link to="/user-orders" className="flex items-center hover:text-gray-400">
-            <AiOutlineFileText size={26} />
-            <span className="ml-2">My Orders</span>
-          </Link>
-        )}
-      </div>
-
-      <div className="relative flex items-center">
-        {userInfo ? (
-          <>
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center text-white hover:text-gray-400"
-            >
-              <span>{userInfo.username}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 ml-1 ${dropdownOpen ? "transform rotate-180" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
-                />
-              </svg>
-            </button>
-            {loggedInUserId && dropdownOpen && (
-              <ul className="absolute right-0 mt-2 bg-white text-black rounded shadow-lg w-40">
-                <li>
-                  <button
-                    onClick={logoutHandler}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            )}
-          </>
-        ) : (
-          !loggedInUserId && (
-            <div className="flex space-x-6">
-              <Link to="/login" className="flex items-center hover:text-gray-400">
-                <AiOutlineLogin size={26} />
-                <span className="ml-2">LOGIN</span>
-              </Link>
-              <Link to="/register" className="flex items-center hover:text-gray-400">
-                <AiOutlineUserAdd size={26} />
-                <span className="ml-2">REGISTER</span>
-              </Link>
-            </div>
-          )
-        )}
-      </div>
+    <div className="top-nav-bar text-white flex justify-between items-center px-4 py-2 h-16 fixed w-full z-50">
+  {/* Left Side (Logo & Menu) */}
+    <div className="flex items-center space-x-6">
+      <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-black focus:outline-none">
+        <AiOutlineMenu size={19} />
+      </button>
+      <Link to="/" className="flex items-center hover:text-gray-400 relative">
+      <span className="text-4xl font-semibold text-black lowercase tracking-tight leading-none">
+        thecircle
+      </span>
+      {/* Green Dot */}
+      <span className="text-[#6BBE44] text-4xl font-bold leading-none">.</span>
+    </Link>
     </div>
+
+  {/* Centered Search Bar */}
+  <div className="flex-1 flex justify-center">
+  <div className="w-full max-w-[600px] min-w-[300px]">
+    <div className="relative flex items-center">
+      {/* Search Input */}
+      <input
+        className="w-full bg-white placeholder:text-gray-500 text-black text-lg border border-gray-300 rounded-full pl-4 pr-16 py-2.5 transition duration-200 ease-in-out focus:outline-none  hover:border-gray-400 shadow-sm"
+      />
+      {/* Search Button (Merged with Input) */}
+      <button className="absolute right-0 top-0 h-full w-14 bg-gray-100 border-l border-gray-300 rounded-r-full flex justify-center items-center hover:bg-gray-200 active:bg-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-600">
+          <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+  {/* Right Side (User & Cart) */}
+  <div className="flex items-center space-x-6">
+    {loggedInUserId && (
+      <Link to="/cart" className="relative flex items-center hover:text-gray-400">
+        <AiOutlineShoppingCart size={26} />
+        {cartItems.length > 0 && (
+          <span className="absolute top-0 right-0 px-1 py-0 text-sm text-white bg-pink-500 rounded-full">
+            {cartItems.reduce((a, c) => a + c.qty, 0)}
+          </span>
+        )}
+        <span className="ml-2">Cart</span>
+      </Link>
+    )}
+
+    {loggedInUserId && (
+      <Link to="/user-orders" className="flex items-center hover:text-gray-400">
+        <AiOutlineFileText size={26} />
+        <span className="ml-2">My Orders</span>
+      </Link>
+    )}
+
+    {userInfo ? (
+      <button onClick={toggleDropdown} className="flex items-center text-white hover:text-gray-400">
+        <span>{userInfo.username}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={`h-4 w-4 ml-1 ${dropdownOpen ? "transform rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="white"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+          />
+        </svg>
+      </button>
+    ) : (
+      <div className="flex space-x-6">
+        <Link to="/login" className="flex items-center hover:text-gray-400">
+          <AiOutlineLogin size={26} />
+          <span className="ml-2">LOGIN</span>
+        </Link>
+        <Link to="/register" className="flex items-center hover:text-gray-400">
+          <AiOutlineUserAdd size={26} />
+          <span className="ml-2">REGISTER</span>
+        </Link>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 
