@@ -31,13 +31,14 @@ const SignUp = () => {
   const [dietaryPreferences, setDietaryPreferences] = useState([]); // Array of dietary preferences
 
   const [message, setMessage] = useState('');
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
       setLoading(true); // Set button to "Logging in..."
 
     try {
-      const response = await axios.post('http://localhost:3000/api/users/signup', {
+     // Build the user object dynamically, excluding empty optional fields
+      const userData = {
         firstName,
         lastName,
         email,
@@ -45,13 +46,25 @@ const SignUp = () => {
         password,
         passwordConfirm,
         role,
-      });
+        birthdate,
+        sex,
+        height,
+        weight,
+        bodyFatPercentage,
+        activityLevel,
+        fitnessGoal,
+      };
 
+      // Only add optional fields if they have a value
+      if (targetWeight) userData.targetWeight = targetWeight;
+      if (dietaryPreferences.length > 0) userData.dietaryPreferences = dietaryPreferences;
+
+      const response = await axios.post('http://localhost:3000/api/users/signup', userData);
       toast.success("User successfully registered"); 
       setTimeout(() => navigate("/Login"), 2000); // ✅ Redirect to home after success
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error occurred during signup');
-         setLoading(false); // Reset button state on failure
+      setLoading(false); // Reset button state on failure
 
     }
   };
