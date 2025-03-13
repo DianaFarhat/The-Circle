@@ -81,7 +81,7 @@ setIsLoggedIn(false);
       <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-black focus:outline-none">
         <AiOutlineMenu size={19} />
       </button>
-      <Link to="/" className="flex items-center hover:text-gray-400 relative">
+      <Link to="/" className="flex hover:text-gray-400 relative">
       <span className="text-3xl font-semibold text-black lowercase tracking-tight leading-none">
         thecircle
       </span>
@@ -170,7 +170,7 @@ setIsLoggedIn(false);
 
       {/* Dropdown Menu */}
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden animate-fade-in">
+        <div className="absolute top-16 right-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden animate-fade-in">
           {!loggedInUserId ? (
             // Not Logged In: Show Login & Sign Up
             <>
