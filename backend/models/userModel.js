@@ -77,10 +77,6 @@ const userSchema = new mongoose.Schema(
     type: Number,
     required: [true, "Please enter your weight in kg"],
   },
-  bodyFatPercentage: {
-    type: Number,
-    required: [true, "Please enter your body fat percentage"],
-  },
   activityLevel: {
     type: String,
     enum: ["Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"],
