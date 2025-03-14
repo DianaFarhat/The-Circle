@@ -53,7 +53,7 @@ const Navigation = () => {
         { withCredentials: true }
       );
 
-setIsLoggedIn(false);
+      setIsLoggedIn(false);
       if (response.status === 200) {
         localStorage.removeItem("token");
         localStorage.removeItem("userInfo");
@@ -67,10 +67,10 @@ setIsLoggedIn(false);
         }).then(() => navigate("/login"));
       } else {
         Swal.fire("Error", "Logout failed. Please try again.", "error");
-      }
-    } catch (err) {
-      Swal.fire("Error", "An unexpected error occurred.", "error");
-      console.error("Logout error:", err);
+       }
+      } catch (err) {
+        Swal.fire("Error", "An unexpected error occurred.", "error");
+        console.error("Logout error:", err);
     }
   };
 
